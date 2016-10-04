@@ -1,11 +1,12 @@
 class Game
 
-    attr_reader :current_player
+    attr_reader :current_player, :winner
 
     def initialize(players, board)
         @players        = players
         @board          = board
         @current_player = players[0]
+        @winner         = nil
     end
 
     def number_of_players
@@ -14,6 +15,18 @@ class Game
 
     def update_current_player()
         @current_player = @players.rotate![0]
+    end
+
+    def next_turn(spaces)
+        move_player(spaces)
+        update_current_player
+    end
+
+    def move_player(spaces)
+        valid_move = validate_movement(spaces)
+        @current_player.move(valid_move)
+        modifier = @board.modifier_at_position(@current_player.position)
+        @current_player.move(modifier)
     end
 
     def validate_movement(spaces)
@@ -27,12 +40,13 @@ class Game
         return movement
     end
 
-    def next_turn(spaces)
-        valid_move = validate_movement(spaces)
-        @current_player.move(valid_move)
-        modifier = @board.modifier_at_position(@current_player.position)
-        @current_player.move(modifier)
-        update_current_player
+    def is_won?
+        for player in @players
+            if player.position == @board.win_tile
+                @winner = player
+            end
+        end
+        return (@winner != nil)
     end
 
 end

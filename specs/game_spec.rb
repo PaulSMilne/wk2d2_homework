@@ -33,5 +33,27 @@ class TestGame < MiniTest::Test
         assert_equal(@player2, @game.current_player)
     end
 
+    def test_can_take_turn
+        @game.next_turn(1)
+        assert_equal(@player2, @game.current_player)
+        assert_equal(1, @player1.position)
+    end
+
+    def test_cannot_move_beyond_end
+        @game.next_turn(15)
+        assert_equal(8, @player1.position)
+    end
+
+    def test_can_take_turn_with_ladder
+        @game.next_turn(2)
+        assert_equal(@player2, @game.current_player)
+        assert_equal(6, @player1.position)
+    end
+
+    def test_can_take_turn_with_snake
+        @game.next_turn(7)
+        assert_equal(@player2, @game.current_player)
+        assert_equal(0, @player1.position)
+    end
 end
 

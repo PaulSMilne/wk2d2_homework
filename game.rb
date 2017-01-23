@@ -18,6 +18,7 @@ class Game
     end
 
     def next_turn(spaces)
+        return if (is_won?)
         move_player(spaces)
         update_current_player
     end

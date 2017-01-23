@@ -64,5 +64,14 @@ class TestGame < MiniTest::Test
         @game.next_turn(8)
         assert_equal(true, @game.is_won?)
     end
+
+    def test_no_next_turn_on_win
+        @game.next_turn(8)
+        assert_equal(true, @game.is_won?)
+
+        @game.next_turn(3)
+        assert_equal(0, @player2.position)
+
+    end
 end
 
